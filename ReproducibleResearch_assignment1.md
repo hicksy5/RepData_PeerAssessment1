@@ -8,14 +8,6 @@ First we need to load the data from activity.csv
 ```r
 df <- read.csv("activity.csv")
 ```
-
-```
-## Warning: cannot open file 'activity.csv': No such file or directory
-```
-
-```
-## Error: cannot open the connection
-```
 ## Next we load the plyr library and use the ddply function to create 
 
 
@@ -33,18 +25,7 @@ library(plyr)
 
 ```r
 byDaySummary <- ddply(df, .(date), summarise, stepsPerDay = sum(steps))
-```
-
-```
-## Error: missing value where TRUE/FALSE needed
-```
-
-```r
 byIntervalSummary <- ddply(df, .(interval), summarise, averageStepsPerInterval = mean(steps,na.rm=TRUE))
-```
-
-```
-## Error: missing value where TRUE/FALSE needed
 ```
 
 
@@ -55,18 +36,7 @@ byIntervalSummary <- ddply(df, .(interval), summarise, averageStepsPerInterval =
 
 ```r
 intervals24hour <- strptime(formatC(df$interval[1:288],width = 4, format = "d", flag = "0"), "%H%M")
-```
-
-```
-## Error: object of type 'closure' is not subsettable
-```
-
-```r
 byIntervalSummary <- cbind(intervals24hour, byIntervalSummary)
-```
-
-```
-## Error: object 'intervals24hour' not found
 ```
 
 ## What is mean total number of steps taken per day?
@@ -82,24 +52,11 @@ main = "Steps taken per day",
 xlab = "Number of steps")
 ```
 
-```
-## Error: object 'byDaySummary' not found
-```
+![plot of chunk unnamed-chunk-5](figure/unnamed-chunk-5.png) 
 
 ```r
 meanStepsPerDay <- round(mean(byDaySummary$stepsPerDay,na.rm=TRUE))
-```
-
-```
-## Error: object 'byDaySummary' not found
-```
-
-```r
 medianStepsPerDay <- round(median(byDaySummary$stepsPerDay,na.rm=TRUE))
-```
-
-```
-## Error: object 'byDaySummary' not found
 ```
 
 
@@ -120,19 +77,13 @@ xlab = "Interval",
 ylab = "Average steps")
 ```
 
-```
-## Error: object 'byIntervalSummary' not found
-```
+![plot of chunk unnamed-chunk-6](figure/unnamed-chunk-6.png) 
 
 ## Furthermore, the maximum activity interval can be extracted. 
 
 
 ```r
 maxActivityInterval <- byIntervalSummary$interval[which.max(byIntervalSummary$averageStepsPerInterval)]
-```
-
-```
-## Error: object 'byIntervalSummary' not found
 ```
 The maximum average activty is at 8:35am
 
@@ -146,10 +97,6 @@ Firstly, need to review how many values are missing from the dataset
 numberOfMissingValues <- sum(is.na(df$steps))
 ```
 
-```
-## Error: object of type 'closure' is not subsettable
-```
-
 There are 2304 missing values in the data
 
 
@@ -159,44 +106,18 @@ There are 2304 missing values in the data
 ```r
 locationNA <- is.na(df$steps)
 ```
-
-```
-## Error: object of type 'closure' is not subsettable
-```
 There are 61 days, therefore repeat 61 times
 
 ```r
 intervalMeansExtension <- as.data.frame(rep(byIntervalSummary$averageStepsPerInterval, times = 61)) 
-```
-
-```
-## Error: object 'byIntervalSummary' not found
-```
-
-```r
 names(intervalMeansExtension)  <- c("intervalMeansExtension")
-```
-
-```
-## Error: object 'intervalMeansExtension' not found
 ```
 
 ## Append on interval Mean Extension data frame
 
 ```r
 dfImputed <- cbind(df, intervalMeansExtension)
-```
-
-```
-## Error: object 'intervalMeansExtension' not found
-```
-
-```r
 dfImputed$steps[locationNA]<- dfImputed$intervalMeansExtension[locationNA]
-```
-
-```
-## Error: object 'dfImputed' not found
 ```
 
 
@@ -205,10 +126,6 @@ dfImputed$steps[locationNA]<- dfImputed$intervalMeansExtension[locationNA]
 
 ```r
 byDaySummaryImputed <- ddply(dfImputed, .(date), summarise, stepsPerDay = sum(steps,na.rm=TRUE))
-```
-
-```
-## Error: object 'dfImputed' not found
 ```
 
 
@@ -220,24 +137,11 @@ hist(byDaySummaryImputed$stepsPerDay,
      xlab = "Number of steps")
 ```
 
-```
-## Error: object 'byDaySummaryImputed' not found
-```
+![plot of chunk unnamed-chunk-13](figure/unnamed-chunk-13.png) 
 
 ```r
 meanStepsPerDayImputed <- round(mean(byDaySummaryImputed$stepsPerDay))
-```
-
-```
-## Error: object 'byDaySummaryImputed' not found
-```
-
-```r
 medianStepsPerDayImputed <- round(median(byDaySummaryImputed$stepsPerDay))
-```
-
-```
-## Error: object 'byDaySummaryImputed' not found
 ```
 
 The mean number of steps per day is 10766
@@ -254,18 +158,10 @@ Assign day of week to each record.
 ```r
 df$DayOfWeek <- as.factor(weekdays(as.Date(df$date)))
 ```
-
-```
-## Error: object of type 'closure' is not subsettable
-```
 Replace day of week with type of day it is.
 
 ```r
 levels(df$DayOfWeek) <- c("Weekday","Weekday","Weekend","Weekend","Weekday","Weekday","Weekday")
-```
-
-```
-## Error: object of type 'closure' is not subsettable
 ```
 Now again we make a by interval summary of steps taken but this time seperating out into the weekends from the weekdays before we make the average.
 Then we can generate a plot of interval vs average steps per interval conditioned on weekday vs weekend.
@@ -273,10 +169,6 @@ Then we can generate a plot of interval vs average steps per interval conditione
 
 ```r
 byIntervalSummaryWeekdayWeekend <- ddply(df, .(interval, DayOfWeek), summarise, averageStepsPerInterval = mean(steps, na.rm=TRUE))
-```
-
-```
-## Error: missing value where TRUE/FALSE needed
 ```
 
 ## Summary of type of day per time interval
@@ -291,9 +183,7 @@ xyplot(byIntervalSummaryWeekdayWeekend$averageStepsPerInterval ~ byIntervalSumma
        ylab = "Average steps per interval")
 ```
 
-```
-## Error: object 'byIntervalSummaryWeekdayWeekend' not found
-```
+![plot of chunk unnamed-chunk-17](figure/unnamed-chunk-17.png) 
 
 USing a xy plot it is possible to see there is significant difference in activity from weekday to weekend.
 
