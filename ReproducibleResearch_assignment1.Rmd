@@ -157,3 +157,5 @@ xyplot(byIntervalSummaryWeekdayWeekend$averageStepsPerInterval ~ byIntervalSumma
 
 USing a xy plot it is possible to see there is significant difference in activity from weekday to weekend.
 
+## completed 18/08/2014
+
