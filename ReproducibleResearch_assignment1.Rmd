@@ -2,7 +2,7 @@
 
 
 ## Loading and preprocessing the data
-## First we need to load the data from activity.csv 
+First we need to load the data from activity.csv 
 
 ```{r}
 df <- read.csv("activity.csv")
@@ -148,13 +148,12 @@ byIntervalSummaryWeekdayWeekend <- ddply(df, .(interval, DayOfWeek), summarise, 
 
 ```{r}
 library(lattice)
-```
 
-```{r}
 xyplot(byIntervalSummaryWeekdayWeekend$averageStepsPerInterval ~ byIntervalSummaryWeekdayWeekend$interval | byIntervalSummaryWeekdayWeekend$DayOfWeek,
        type = "l", layout = c(1,2),
        xlab = "Interval",
        ylab = "Average steps per interval")
 ```
 
-## USing a xy plot it is possible to see there is significant difference in activity from weekday to weekend.
+USing a xy plot it is possible to see there is significant difference in activity from weekday to weekend.
+
