@@ -2,7 +2,7 @@
 
 
 ## Loading and preprocessing the data
-First we need to load the data from activity.csv 
+## First we need to load the data from activity.csv 
 
 ```{r}
 df <- read.csv("activity.csv")
@@ -12,11 +12,7 @@ df <- read.csv("activity.csv")
 ```{r}
 library(plyr)
 ```
-
-## a summary data frame byDaySummary with the total number of steps per day 
-## a summary data frame byIntervalSummary with the mean number of steps per interval across the two month period. 
-
-
+## Now to develop 2 data frames based around nubmers of steps in particular intervals
 - Sums of steps per day
 - Average steps per interval of time
 
@@ -103,7 +99,6 @@ dfImputed <- cbind(df, intervalMeansExtension)
 dfImputed$steps[locationNA]<- dfImputed$intervalMeansExtension[locationNA]
 ```
 
-
 ## Examine the same frequnecy histogram and examine impact.
 
 ```{r}
@@ -148,12 +143,15 @@ byIntervalSummaryWeekdayWeekend <- ddply(df, .(interval, DayOfWeek), summarise, 
 
 ```{r}
 library(lattice)
+```
 
+```{r}
 xyplot(byIntervalSummaryWeekdayWeekend$averageStepsPerInterval ~ byIntervalSummaryWeekdayWeekend$interval | byIntervalSummaryWeekdayWeekend$DayOfWeek,
        type = "l", layout = c(1,2),
        xlab = "Interval",
        ylab = "Average steps per interval")
 ```
 
-USing a xy plot it is possible to see there is significant difference in activity from weekday to weekend.
+## USing a xy plot it is possible to see there is significant difference in activity from weekday to weekend.
 
+knit2html("ReproducibleResearch_assignment1.Rmd")
